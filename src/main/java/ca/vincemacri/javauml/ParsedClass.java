@@ -136,7 +136,7 @@ public class ParsedClass {
 	 * @return String array of all fields matching the specified conditions.
 	 */
 	public String[] getFields(Modifier[] wanted, Modifier[] unwanted) {
-		Stream<FieldDeclaration> fieldStream = unit.getNodesByType(FieldDeclaration.class).stream();
+		Stream<FieldDeclaration> fieldStream = unit.findAll(FieldDeclaration.class).stream();
 		Stream<FieldDeclaration> validFields = fieldStream
 				.filter(f -> f.getModifiers().containsAll(Arrays.asList(wanted)) && containsNone(f.getModifiers(), unwanted));
 		return formatFields(validFields);
@@ -150,7 +150,7 @@ public class ParsedClass {
 	 * @return String array of all fields matching the specified conditions.
 	 */
 	public String[] getFields(Modifier wanted, Modifier unwanted) {
-		Stream<FieldDeclaration> fieldStream = unit.getNodesByType(FieldDeclaration.class).stream();
+		Stream<FieldDeclaration> fieldStream = unit.findAll(FieldDeclaration.class).stream();
 		Stream<FieldDeclaration> validFields = fieldStream
 				.filter(f -> f.getModifiers().contains(wanted) && !f.getModifiers().contains(unwanted));
 		return formatFields(validFields);
@@ -163,7 +163,7 @@ public class ParsedClass {
 	 * @return String array of all fields matching the specified conditions.
 	 */
 	public String[] getFields(Modifier[] wanted) {
-		Stream<FieldDeclaration> fieldStream = unit.getNodesByType(FieldDeclaration.class).stream();
+		Stream<FieldDeclaration> fieldStream = unit.findAll(FieldDeclaration.class).stream();
 		Stream<FieldDeclaration> validFields = fieldStream.filter(f -> f.getModifiers().containsAll(Arrays.asList(wanted)));
 		return formatFields(validFields);
 	}
@@ -176,7 +176,7 @@ public class ParsedClass {
 	 * @return String array of all methods matching the specified conditions.
 	 */
 	public String[] getMethods(Modifier[] wanted, Modifier[] unwanted) {
-		Stream<MethodDeclaration> methodStream = unit.getNodesByType(MethodDeclaration.class).stream();
+		Stream<MethodDeclaration> methodStream = unit.findAll(MethodDeclaration.class).stream();
 		Stream<MethodDeclaration> validMethods = methodStream
 				.filter(m -> m.getModifiers().containsAll(Arrays.asList(wanted)) && containsNone(m.getModifiers(), unwanted));
 		return formatMethods(validMethods);
@@ -190,7 +190,7 @@ public class ParsedClass {
 	 * @return String array of all methods matching the specified conditions.
 	 */
 	public String[] getMethods(Modifier wanted, Modifier unwanted) {
-		Stream<MethodDeclaration> methodStream = unit.getNodesByType(MethodDeclaration.class).stream();
+		Stream<MethodDeclaration> methodStream = unit.findAll(MethodDeclaration.class).stream();
 		Stream<MethodDeclaration> validMethods = methodStream
 				.filter(m -> m.getModifiers().contains(wanted) && !m.getModifiers().contains(unwanted));
 		return formatMethods(validMethods);
@@ -203,7 +203,7 @@ public class ParsedClass {
 	 * @return String array of all methods matching the specified conditions.
 	 */
 	public String[] getMethods(Modifier[] wanted) {
-		Stream<MethodDeclaration> methodStream = unit.getNodesByType(MethodDeclaration.class).stream();
+		Stream<MethodDeclaration> methodStream = unit.findAll(MethodDeclaration.class).stream();
 		Stream<MethodDeclaration> validMethods = methodStream
 				.filter(m -> m.getModifiers().containsAll(Arrays.asList(wanted)));
 		return formatMethods(validMethods);
@@ -217,7 +217,7 @@ public class ParsedClass {
 	 * @return String array of all methods matching the specified conditions.
 	 */
 	public String[] getConstructors(Modifier[] wanted, Modifier[] unwanted) {
-		Stream<ConstructorDeclaration> constructorStream = unit.getNodesByType(ConstructorDeclaration.class).stream();
+		Stream<ConstructorDeclaration> constructorStream = unit.findAll(ConstructorDeclaration.class).stream();
 		Stream<ConstructorDeclaration> validConstructors = constructorStream
 				.filter(c -> c.getModifiers().containsAll(Arrays.asList(wanted)) && containsNone(c.getModifiers(), unwanted));
 		return formatConstructors(validConstructors);
@@ -231,7 +231,7 @@ public class ParsedClass {
 	 * @return String array of all methods matching the specified conditions.
 	 */
 	public String[] getConstructors(Modifier wanted, Modifier unwanted) {
-		Stream<ConstructorDeclaration> constructorStream = unit.getNodesByType(ConstructorDeclaration.class).stream();
+		Stream<ConstructorDeclaration> constructorStream = unit.findAll(ConstructorDeclaration.class).stream();
 		Stream<ConstructorDeclaration> validConstructors = constructorStream
 				.filter(c -> c.getModifiers().contains(wanted) && !c.getModifiers().contains(unwanted));
 		return formatConstructors(validConstructors);
@@ -244,7 +244,7 @@ public class ParsedClass {
 	 * @return String array of all methods matching the specified conditions.
 	 */
 	public String[] getConstructors(Modifier[] wanted) {
-		Stream<ConstructorDeclaration> constructorStream = unit.getNodesByType(ConstructorDeclaration.class).stream();
+		Stream<ConstructorDeclaration> constructorStream = unit.findAll(ConstructorDeclaration.class).stream();
 		Stream<ConstructorDeclaration> validConstructors = constructorStream
 				.filter(m -> m.getModifiers().containsAll(Arrays.asList(wanted)));
 		return formatConstructors(validConstructors);
