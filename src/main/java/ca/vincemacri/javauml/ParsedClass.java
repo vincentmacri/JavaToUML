@@ -2,33 +2,38 @@ package ca.vincemacri.javauml;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
 public class ParsedClass {
 
 	/** The {@link CompilationUnit} for this parsed class. */
-	private CompilationUnit unit;
+	private final CompilationUnit unit;
+
+	private final boolean fullyQualifiedName;
 
 	/**
 	 * The {@link ParsedClass} constructor.
 	 * 
-	 * @param unit A {@link CompilationUnit} for this class.
+	 * @param unit               A {@link CompilationUnit} for this class.
+	 * @param fullyQualifiedName
 	 */
-	public ParsedClass(CompilationUnit unit) {
+	public ParsedClass(CompilationUnit unit, boolean fullyQualifiedName) {
 		this.unit = unit;
+		this.fullyQualifiedName = fullyQualifiedName;
 	}
 
 	/**
@@ -37,7 +42,12 @@ public class ParsedClass {
 	 * @return The class name.
 	 */
 	public String getName() {
-		return unit.getType(0).getNameAsString();
+		final TypeDeclaration<?> typeDeclaration = unit.getType(0);
+		final String name = typeDeclaration.getNameAsString();
+		if (fullyQualifiedName) {
+			return typeDeclaration.getFullyQualifiedName().orElse(name);
+		}
+		return name;
 	}
 
 	/**
@@ -248,5 +258,17 @@ public class ParsedClass {
 		Stream<ConstructorDeclaration> validConstructors = constructorStream
 				.filter(m -> m.getModifiers().containsAll(Arrays.asList(wanted)));
 		return formatConstructors(validConstructors);
+	}
+
+	/**
+	 * Get all of the class field types
+	 * 
+	 * @return List<Type>
+	 */
+	public List<String> getRelations() {
+		Stream<FieldDeclaration> fieldStream = unit.findAll(FieldDeclaration.class).stream();
+		return fieldStream.map(f -> ((ClassOrInterfaceType) f.getCommonType()).getNameWithScope())
+				.filter(f -> !f.startsWith("java.")).map(f -> String.format("%s -- %s", this.getName(), f))
+				.collect(Collectors.toList());
 	}
 }

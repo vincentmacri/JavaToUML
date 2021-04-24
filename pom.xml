@@ -19,6 +19,13 @@
       <artifactId>javaparser-symbol-solver-core</artifactId>
       <version>3.20.2</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.anaptecs.jeaf.owalibs</groupId>
+      <artifactId>org.apache.commons.cli</artifactId>
+      <version>4.3.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>
